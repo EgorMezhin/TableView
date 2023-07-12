@@ -64,7 +64,6 @@ extension ViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(at: indexPath) else { return }
         guard let selectedItem = dataSource.itemIdentifier(for: indexPath) else { return }
-
         if selectedCells.contains(selectedItem) {
             selectedCells = selectedCells.filter { $0 != selectedItem }
             cell.accessoryType = .none
@@ -74,8 +73,10 @@ extension ViewController: UITableViewDelegate {
             dataSourceSnapshot.deleteItems([selectedItem])
             dataSourceSnapshot.insertItems([selectedItem], beforeItem: dataSourceSnapshot.itemIdentifiers.first ?? "")
             dataSource.apply(dataSourceSnapshot, animatingDifferences: true)
+            cell.backgroundColor = .white
         }
-        tableView.deselectRow(at: indexPath, animated: true)
+        cell.isSelected = false
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
